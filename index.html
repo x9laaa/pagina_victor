@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computón Solidaria | Gestión de soporte</title>
+<style>
+:root{--blue:#1f4e79;--light:#eef4f8;--border:#c8d3dd;--green:#e6f4ea;--orange:#fff1d6;--red:#fbe8e8}
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f3f6f9;color:#1d2730}
+header{background:var(--blue);color:#fff;padding:18px 24px}header h1{font-size:22px;margin:0 0 5px}header p{margin:0;font-size:13px}
+main{max-width:1250px;margin:20px auto;padding:0 16px;display:grid;grid-template-columns:minmax(340px,1fr) minmax(360px,1fr);gap:18px}
+.panel{background:white;border:1px solid var(--border);border-radius:10px;padding:17px;box-shadow:0 2px 8px #0000000a;margin-bottom:16px}
+h2{margin:0 0 13px;font-size:18px;color:var(--blue)}h3{font-size:14px;color:var(--blue);margin:14px 0 8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700}input,select,textarea{font:14px Arial;padding:9px;border:1px solid #aebbc7;border-radius:5px;width:100%;background:#fff}textarea{resize:vertical;min-height:58px}
+.checks{display:flex;flex-wrap:wrap;gap:8px;font-size:12px}.checks label{font-weight:400;display:flex;align-items:center;gap:4px}.checks input{width:auto}
+.buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}button{border:0;border-radius:6px;padding:9px 12px;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#e5edf4;color:#17344d}.danger{background:var(--red);color:#9b2222}
+.note{font-size:12px;color:#53616d;line-height:1.45}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.stat{background:var(--light);padding:10px;border-radius:7px}.stat strong{display:block;font-size:22px;color:var(--blue)}.stat span{font-size:11px}
+.records{width:100%;border-collapse:collapse;font-size:12px}.records th,.records td{border-bottom:1px solid #e0e6eb;text-align:left;padding:8px 5px;vertical-align:top}.records th{color:var(--blue)}.record-actions{display:flex;gap:4px;flex-wrap:wrap}.record-actions button{font-size:11px;padding:6px}
+.empty{font-size:13px;color:#6b7782;padding:12px 0}.badge{display:inline-block;border-radius:12px;padding:3px 7px;font-size:10px;background:#e5edf4}.badge.green{background:var(--green)}.badge.orange{background:var(--orange)}
+.tablewrap{overflow-x:auto}.fullrow{grid-column:1/-1}footer{text-align:center;font-size:11px;color:#6b7782;padding:12px}
+@media(max-width:850px){main{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+@media print{@page{size:letter landscape;margin:8mm}body{background:#fff}header,main,footer{display:none!important}#printArea{display:grid!important;grid-template-columns:1fr 1fr;gap:5mm;position:relative}#printArea.reportMode{display:block!important}.print-ticket{height:190mm;border:1.2px solid #1f4e79;padding:7mm 6mm;page-break-inside:avoid;position:relative;font-family:Arial,sans-serif}.print-ticket + .print-ticket{border-left:1px dashed #777}.pt-title{text-align:center;color:#1f4e79;font-weight:700;font-size:12pt;margin-bottom:2mm}.pt-sub{text-align:center;font-size:8pt;margin-bottom:2mm}.pt-copy{text-align:right;font-weight:700;font-size:8pt;margin-bottom:3mm}.pt-row{font-size:9pt;margin:2.5mm 0;line-height:1.25}.pt-label{font-weight:700}.pt-long{min-height:7mm;border-bottom:1px solid #bbb}.pt-footer{position:absolute;bottom:4mm;left:8mm;right:8mm;text-align:center;font-size:7pt;font-style:italic}.print-report{display:block!important;font-family:Arial;padding:5mm}.print-report table{border-collapse:collapse;width:100%;font-size:9pt}.print-report th,.print-report td{border:1px solid #888;padding:5px;text-align:left}.print-report h1,.print-report h2{color:#1f4e79}}
+#printArea{display:none}.print-report{display:none}
+</style></head>
+<body>
+<header><h1>Computón Solidaria · Gestión de soporte técnico</h1><p>Recepción, seguimiento, inventario y resultados de la jornada a beneficio de la Teletón.</p></header>
+<main>
+<div>
+<section class="panel">
+<h2>1. Recepción y seguimiento del dispositivo</h2>
+<form id="ticketForm"><div class="grid">
+<div class="field"><label for="ticketNo">N.º de ticket</label><input id="ticketNo" readonly></div>
+<div class="field"><label for="date">Fecha de recepción</label><input id="date" type="date" required></div>
+<div class="field"><label for="name">Nombre del usuario</label><input id="name" required></div>
+<div class="field"><label for="phone">Teléfono de contacto</label><input id="phone" type="tel"></div>
+<div class="field"><label for="device">Tipo de dispositivo</label><select id="device"><option>Notebook</option><option>PC de escritorio</option><option>Tablet</option><option>Impresora</option><option>Monitor</option><option>Otro</option></select></div>
+<div class="field"><label for="brand">Marca y modelo</label><input id="brand"></div>
+<div class="field"><label for="serial">N.º de serie (si corresponde)</label><input id="serial"></div>
+<div class="field"><label>Accesorios recibidos</label><div class="checks"><label><input type="checkbox" name="acc" value="Cargador">Cargador</label><label><input type="checkbox" name="acc" value="Cable">Cable</label><label><input type="checkbox" name="acc" value="Bolso">Bolso</label><label><input type="checkbox" name="acc" value="Periférico">Periférico</label><label><input type="checkbox" name="acc" value="Otro">Otro</label></div></div>
+<div class="field full"><label for="problem">Problema informado por el usuario</label><textarea id="problem" placeholder="Describa brevemente la falla o solicitud"></textarea></div>
+<div class="field"><label for="condition">Estado físico al recibir</label><select id="condition"><option>Bueno</option><option>Con detalles</option><option>Dañado</option></select></div>
+<div class="field"><label for="status">Estado de atención</label><select id="status"><option>Recibido para diagnóstico</option><option>En revisión</option><option>Solucionado</option><option>Parcialmente solucionado</option><option>Requiere repuesto</option><option>Derivar / revisión posterior</option><option>Entregado</option></select></div>
+<div class="field full"><label for="diagnosis">Diagnóstico técnico</label><textarea id="diagnosis" placeholder="Causa probable o resultado de las pruebas"></textarea></div>
+<div class="field full"><label for="work">Trabajo realizado</label><textarea id="work" placeholder="Limpieza, configuración, revisión, instalación, etc."></textarea></div>
+<div class="field full"><label for="parts">Repuestos / materiales utilizados</label><textarea id="parts" placeholder="Indicar repuestos o materiales; si no aplica, dejar en blanco"></textarea></div>
+<div class="field full"><label for="observations">Observaciones adicionales</label><textarea id="observations"></textarea></div>
+<div class="field"><label for="technician">Estudiante / técnico responsable</label><input id="technician"></div>
+<div class="field"><label for="deliveryDate">Fecha de entrega (si corresponde)</label><input id="deliveryDate" type="date"></div>
+</div><div class="buttons"><button class="primary" type="submit">Guardar registro</button><button class="secondary" type="button" id="printBtn">Imprimir dos copias</button><button class="secondary" type="button" id="newBtn">Nuevo ticket</button></div>
+<p class="note">Los datos se guardan en este navegador y en este computador. Exporta periódicamente una copia CSV como respaldo.</p>
+</form></section>
+</div>
+<div>
+<section class="panel"><h2>2. Panel de control</h2>
+<div class="stats">
+<div class="stat"><strong id="totalCount">0</strong><span>Total de equipos</span></div>
+<div class="stat"><strong id="pendingCount">0</strong><span>Pendientes / en revisión</span></div>
+<div class="stat"><strong id="fixedCount">0</strong><span>Solucionados</span></div>
+<div class="stat"><strong id="deliveredCount">0</strong><span>Entregados</span></div>
+<div class="stat"><strong id="partsCount">0</strong><span>Requieren repuesto</span></div>
+<div class="stat"><strong id="accessoriesCount">0</strong><span>Con accesorios registrados</span></div>
+</div>
+<div class="buttons"><button class="secondary" id="csvBtn" type="button">Exportar registro CSV</button><button class="secondary" id="reportBtn" type="button">Informe final / imprimir</button><button class="secondary" id="backupBtn" type="button">Descargar respaldo JSON</button><button class="secondary" id="restoreBtn" type="button">Importar respaldo JSON</button><input id="restoreFile" type="file" accept=".json,application/json" hidden></div>
+<p class="note">El informe final resume los resultados y lista los equipos registrados. El CSV se puede abrir en Excel.</p>
+</section>
+<section class="panel"><h2>3. Inventario y seguimiento de equipos</h2>
+<div class="field"><label for="search">Buscar por ticket, usuario, dispositivo o serie</label><input id="search" placeholder="Escribe para filtrar el registro"></div>
+<div class="tablewrap" id="recordsWrap"><p class="empty">Aún no hay tickets guardados.</p></div>
+</section>
+</div>
+</main><footer>Computón Solidaria · Sistema local de registro y seguimiento</footer>
+<div id="printArea"></div>
+<script>
+const $=id=>document.getElementById(id), KEY='computonTicketsV2';
+let records=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('computonTicketsV1')||'[]'),currentId=null;
+function today(){let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function nextNo(){let ns=records.map(r=>parseInt(String(r.ticketNo||'').replace(/\D/g,''),10)).filter(Number.isFinite);return 'CS-'+String(Math.max(0,...ns)+1).padStart(4,'0')}
+function init(){ $('date').value=today();$('ticketNo').value=nextNo();render()}
+function getForm(){return {ticketNo:$('ticketNo').value,date:$('date').value,name:$('name').value.trim(),phone:$('phone').value.trim(),device:$('device').value,brand:$('brand').value.trim(),serial:$('serial').value.trim(),accessories:[...document.querySelectorAll('input[name="acc"]:checked')].map(x=>x.value),problem:$('problem').value.trim(),condition:$('condition').value,status:$('status').value,diagnosis:$('diagnosis').value.trim(),work:$('work').value.trim(),parts:$('parts').value.trim(),observations:$('observations').value.trim(),technician:$('technician').value.trim(),deliveryDate:$('deliveryDate').value,updatedAt:new Date().toISOString()}}
+function save(){let r=getForm();if(!r.name){alert('Ingresa el nombre del usuario.');$('name').focus();return false}if(currentId){let i=records.findIndex(x=>x.ticketNo===currentId);if(i>=0)records[i]=r;else records.unshift(r)}else records.unshift(r);localStorage.setItem(KEY,JSON.stringify(records));currentId=r.ticketNo;render();return true}
+$('ticketForm').addEventListener('submit',e=>{e.preventDefault();if(save())alert('Registro guardado: '+currentId)});
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){let q=$('search').value.toLowerCase();let filtered=records.filter(r=>[r.ticketNo,r.name,r.device,r.brand,r.serial,r.status].join(' ').toLowerCase().includes(q));
+$('totalCount').textContent=records.length;$('pendingCount').textContent=records.filter(r=>!['Entregado','Solucionado','Parcialmente solucionado'].includes(r.status)).length;
+$('fixedCount').textContent=records.filter(r=>['Solucionado','Parcialmente solucionado'].includes(r.status)).length;
+$('deliveredCount').textContent=records.filter(r=>r.status==='Entregado').length;
+$('partsCount').textContent=records.filter(r=>r.status==='Requiere repuesto'||/repuesto/i.test(r.parts||'')).length;
+$('accessoriesCount').textContent=records.filter(r=>(r.accessories||[]).length>0).length;
+if(!filtered.length){$('recordsWrap').innerHTML='<p class="empty">No hay registros que coincidan con la búsqueda.</p>';return}
+$('recordsWrap').innerHTML='<table class="records"><thead><tr><th>Ticket / fecha</th><th>Usuario / equipo</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>'+filtered.map(r=>`<tr><td><strong>${esc(r.ticketNo)}</strong><br>${esc(r.date||'')}</td><td>${esc(r.name)}<br><span style="color:#667">${esc(r.device)} ${esc(r.brand||'')}</span><br><small>Serie: ${esc(r.serial||'—')}</small></td><td><span class="badge ${r.status==='Entregado'||r.status==='Solucionado'?'green':r.status==='Requiere repuesto'?'orange':''}">${esc(r.status)}</span></td><td><div class="record-actions"><button class="secondary" onclick="loadRecord('${esc(r.ticketNo)}')">Editar</button><button class="secondary" onclick="printRecord('${esc(r.ticketNo)}')">Ticket</button></div></td></tr>`).join('')+'</tbody></table>'}
+window.loadRecord=no=>{let r=records.find(x=>x.ticketNo===no);if(!r)return;currentId=no;$('ticketNo').value=r.ticketNo;for(let k of ['date','name','phone','device','brand','serial','problem','condition','status','diagnosis','work','parts','observations','technician','deliveryDate'])$(k).value=r[k]||'';document.querySelectorAll('input[name="acc"]').forEach(x=>x.checked=(r.accessories||[]).includes(x.value));window.scrollTo({top:0,behavior:'smooth'})};
+$('search').addEventListener('input',render);
+function ticketMarkup(r,copy){let acc=(r.accessories||[]).join(', ')||'Ninguno indicado';return `<section class="print-ticket"><div class="pt-title">COMPUTÓN SOLIDARIA · RECEPCIÓN DE DISPOSITIVOS</div><div class="pt-sub">Jornada de soporte técnico a beneficio de la Teletón</div><div class="pt-copy">${copy}</div>
+<div class="pt-row"><span class="pt-label">N.º ticket:</span> ${esc(r.ticketNo)} &nbsp; <span class="pt-label">Fecha:</span> ${esc(r.date)}</div><div class="pt-row"><span class="pt-label">Nombre:</span> ${esc(r.name)} &nbsp; <span class="pt-label">Teléfono:</span> ${esc(r.phone||'—')}</div>
+<div class="pt-row"><span class="pt-label">Dispositivo:</span> ${esc(r.device)} &nbsp; <span class="pt-label">Marca/modelo:</span> ${esc(r.brand||'—')}</div><div class="pt-row"><span class="pt-label">N.º serie:</span> ${esc(r.serial||'—')}</div><div class="pt-row"><span class="pt-label">Accesorios:</span> ${esc(acc)}</div><div class="pt-row"><span class="pt-label">Problema informado:</span> ${esc(r.problem||'—')}</div><div class="pt-row pt-long"></div><div class="pt-row"><span class="pt-label">Estado físico:</span> ${esc(r.condition)} &nbsp; <span class="pt-label">Estado:</span> ${esc(r.status)}</div><div class="pt-row"><span class="pt-label">Diagnóstico:</span> ${esc(r.diagnosis||'Pendiente')}</div><div class="pt-row"><span class="pt-label">Trabajo realizado:</span> ${esc(r.work||'Pendiente')}</div><div class="pt-row"><span class="pt-label">Repuestos/materiales:</span> ${esc(r.parts||'—')}</div><div class="pt-row"><span class="pt-label">Observaciones:</span> ${esc(r.observations||'—')}</div><div class="pt-row"><span class="pt-label">Responsable:</span> ${esc(r.technician||'—')} &nbsp; <span class="pt-label">Entrega:</span> ${esc(r.deliveryDate||'Pendiente')}</div><div class="pt-row"><span class="pt-label">Firma recepción:</span> ______________ &nbsp; <span class="pt-label">Firma usuario:</span> ______________</div><div class="pt-footer">Conserve este comprobante para consultar o retirar el equipo. La recepción no garantiza reparación.</div></section>`}
+function printRecord(no){let r=records.find(x=>x.ticketNo===no);if(!r)return;$('printArea').classList.remove('reportMode');$('printArea').innerHTML=ticketMarkup(r,'COPIA 1 · REGISTRO TÉCNICO')+ticketMarkup(r,'COPIA 2 · USUARIO');window.print()}
+$('printBtn').addEventListener('click',()=>{if(!getForm().name){alert('Completa el nombre del usuario antes de imprimir.');$('name').focus();return}if(save())printRecord(currentId)});
+$('newBtn').addEventListener('click',()=>{currentId=null;$('ticketForm').reset();$('date').value=today();$('ticketNo').value=nextNo()});
+function csvCell(v){return '"'+String(Array.isArray(v)?v.join(', '):(v??'')).replace(/"/g,'""')+'"'}
+$('csvBtn').addEventListener('click',()=>{if(!records.length){alert('No hay registros para exportar.');return}let cols=['ticketNo','date','name','phone','device','brand','serial','accessories','problem','condition','status','diagnosis','work','parts','observations','technician','deliveryDate'];let csv='\ufeff'+[cols.join(';'),...records.map(r=>cols.map(k=>csvCell(r[k])).join(';'))].join('\r\n');download(csv,'registro_computon_solidaria.csv','text/csv;charset=utf-8;')});
+function download(data,name,type){let b=new Blob([data],{type}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('backupBtn').addEventListener('click',()=>download(JSON.stringify({app:'Computón Solidaria',version:2,exportedAt:new Date().toISOString(),records},null,2),'respaldo_computon_solidaria.json','application/json'));
+$('restoreBtn').addEventListener('click',()=>$('restoreFile').click());
+$('restoreFile').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{let data=JSON.parse(await f.text());let arr=Array.isArray(data)?data:data.records;if(!Array.isArray(arr))throw Error();if(!confirm('Se importarán '+arr.length+' registros y se combinarán con los actuales por número de ticket. ¿Continuar?'))return;let map=new Map(records.map(r=>[r.ticketNo,r]));arr.forEach(r=>map.set(r.ticketNo,r));records=[...map.values()];localStorage.setItem(KEY,JSON.stringify(records));render();$('ticketNo').value=nextNo();alert('Respaldo importado correctamente.')}catch(err){alert('No se pudo leer el respaldo. Selecciona un archivo JSON exportado desde esta aplicación.')}finally{e.target.value=''}});
+$('reportBtn').addEventListener('click',()=>{if(!records.length){alert('Aún no hay registros para generar el informe.');return}let count=s=>records.filter(r=>r.status===s).length;let generated=new Date().toLocaleString('es-CL');let table=records.map(r=>`<tr><td>${esc(r.ticketNo)}</td><td>${esc(r.date)}</td><td>${esc(r.name)}</td><td>${esc(r.device)} ${esc(r.brand||'')}</td><td>${esc(r.status)}</td><td>${esc(r.work||r.diagnosis||'Pendiente')}</td><td>${esc(r.technician||'—')}</td><td>${esc(r.deliveryDate||'Pendiente')}</td></tr>`).join('');
+$('printArea').classList.add('reportMode');$('printArea').innerHTML=`<section class="print-report"><h1>Informe de resultados · Computón Solidaria</h1><p>Generado: ${esc(generated)}</p><p>Jornada de soporte técnico a beneficio de la Teletón.</p><h2>Resumen</h2><p>Total de equipos: <b>${records.length}</b> | Pendientes/en revisión: <b>${records.filter(r=>!['Entregado','Solucionado','Parcialmente solucionado'].includes(r.status)).length}</b> | Solucionados o parcialmente solucionados: <b>${records.filter(r=>['Solucionado','Parcialmente solucionado'].includes(r.status)).length}</b> | Entregados: <b>${count('Entregado')}</b> | Requieren repuesto: <b>${count('Requiere repuesto')}</b></p><h2>Detalle de equipos</h2><table><thead><tr><th>Ticket</th><th>Ingreso</th><th>Usuario</th><th>Equipo</th><th>Estado</th><th>Diagnóstico/trabajo</th><th>Responsable</th><th>Entrega</th></tr></thead><tbody>${table}</tbody></table></section>`;window.print()});
+init();
+</script></body></html>
